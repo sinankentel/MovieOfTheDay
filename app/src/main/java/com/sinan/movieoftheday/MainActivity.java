@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public void generateNewMovie(){
 
         int minNumber = 10;
-        int maxNumber = 11;
+        int maxNumber = 10;
 
         randomNumber = rand.nextInt(maxNumber-minNumber + 1) + minNumber;
 
@@ -141,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
             String result = "";
             URL url = null;
             HttpURLConnection connection = null;
+            InputStream inputStream;
+            InputStreamReader reader;
 
             try {
                 url = new URL(urls[0]);
@@ -154,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if(responseCode == HttpURLConnection.HTTP_OK) {
 
-                    InputStream inputStream = connection.getInputStream();
-                    InputStreamReader reader = new InputStreamReader(inputStream);
+                    inputStream = connection.getInputStream();
+                    reader = new InputStreamReader(inputStream);
 
                     int data = reader.read();
 
@@ -170,8 +172,22 @@ public class MainActivity extends AppCompatActivity {
 
                 } else{
 
+                    inputStream = connection.getErrorStream();
+                    reader = new InputStreamReader(inputStream);
+
+                    int data = reader.read();
+
+                    while (data != -1) {
+
+                        char current = (char) data;
+                        result += current;
+                        data = reader.read();
+                    }
+
                     Log.i("Error", "responseCode 200 değil: " + String.valueOf(responseCode));
                     //generateNewMovie();
+
+                    return result;
 
                 }
 
@@ -192,23 +208,25 @@ public class MainActivity extends AppCompatActivity {
 
                 JSONObject jsonObject = new JSONObject(result2);
 
-                randomTitle = jsonObject.getString("original_title");
-                randomMovieYear = jsonObject.getString("release_date");
-                randomMovieImageURL = jsonObject.getString("backdrop_path");
-                randomStatus = jsonObject.getString("status");
-
-                movieTitleTextView.setText(randomTitle);
-                movieDetailButton.setVisibility(View.VISIBLE);
+                randomStatus = jsonObject.getString("status_code");
 
 
                 if (randomStatus.equals("Released")) {
 
+                    randomTitle = jsonObject.getString("original_title");
+                    randomMovieYear = jsonObject.getString("release_date");
+                    randomMovieImageURL = jsonObject.getString("backdrop_path");
+
+                    movieTitleTextView.setText(randomTitle);
+                    movieDetailButton.setVisibility(View.VISIBLE);
+
                     Log.i("Info", "Status Released, hata yok.");
+
 
                 }else if (randomStatus.equals("34")){
 
                     Log.i("Info", "Bu random number'da film yok");
-                    generateNewMovie();
+                    //generateNewMovie();
 
                     movieTitleTextView.setText("Try Again...");
 
