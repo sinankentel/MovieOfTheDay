@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Movie Of The Day</string>
+    <string name="movie_title_text">Movie of the day...</string>
 </resources>

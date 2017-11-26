@@ -38,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
     Button movieDetailButton;
 
 
+    public void logger() {
+
+        Log.i("Info", "logger: ");
+
+    }
+
     public void testButton (View view){
 
         int testRandom = rand.nextInt(5);
@@ -49,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public void generateNewMovie(){
 
         int minNumber = 10;
-        int maxNumber = 16;
+        int maxNumber = 10000;
 
         randomNumber = rand.nextInt(maxNumber-minNumber + 1) + minNumber;
 
@@ -57,9 +63,7 @@ public class MainActivity extends AppCompatActivity {
             DownloadTask task = new DownloadTask();
             Log.i("task statüsü", task.getStatus().toString());
 
-
             task.execute("https://api.themoviedb.org/3/movie/" + Integer.toString(randomNumber) + "?api_key=dfbc389973f4a0bf88d31f55d423b08a");
-
 
         } catch (Exception e) {
 
@@ -90,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
         }
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -99,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("randomMovieImage", byteArray);
 
         startActivity(intent);
-
 
     }
 
@@ -129,13 +134,13 @@ public class MainActivity extends AppCompatActivity {
             }
             catch (IOException e) {
                 e.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
             }
-
 
             return null;
         }
     }
-
 
     public class DownloadTask extends AsyncTask <String, Void, String>{
 
@@ -233,7 +238,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

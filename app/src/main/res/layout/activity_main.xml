@@ -15,12 +15,14 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:background="@drawable/custom_button"
         android:onClick="chooseMovie"
-        android:text="Movie of the Day" />
+        android:text="MOVIE OF THE DAY"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/movieTitleTextView"
@@ -29,7 +31,7 @@
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        tools:text="Movie of the day..."
+        tools:text="@string/movie_title_text"
         android:layout_below="@+id/button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -47,7 +49,7 @@
         android:visibility="invisible" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/testButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -56,5 +58,77 @@
         android:onClick="testButton"
         android:text="Test Number"
         android:visibility="invisible" />
+
+    <!--
+ *Background olarak hazırladığımız custom_button.xml dosyasını seçiyoruz
+ *custom_button.xml dosyası içinde kendimiz istediğimiz gibi radius verebilip
+  istediğimiz renklerde hemde gradient vererek çalışabiliyoruz
+ *Ayrıca tıklandığı zaman hangi rengi verebileceğimizide seçebiliyoruz
+ -->
+    <!--
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dip"
+            android:layout_marginLeft="20dip"
+            android:background="@drawable/custom_button"
+            android:paddingBottom="15dip"
+            android:paddingTop="15dip"
+            android:text="Movie of the Day"
+            android:textColor="@drawable/custom_button_text_color"
+            android:textStyle="normal" />  -->
+
+        <!--
+         *Background olarak hazırladığımız custom_button_image.xml dosyasını seçiyoruz
+          * Bu dosyanın custom_button dosyasından tek farkı renkleri ve radius ları
+          *Button a image eklemek istedimizde android:drawableTop:"@drawable/custom_button_image" ile istediğimiz image ekliyoruz
+          *android:drawableTop text in üst kısmına
+          *android:drawableLeft text in sol kısmına
+          *android:drawableBottom text in alt kısmına
+          *android:drawableRight text in sağ kısmına
+          *Tıklandığı zaman image yada text lerin değişmesini istiyorsak bunu kod içersinde manuel olarak yapmalıyız.
+         -->
+
+    <!--<Button
+        android:id="@+id/button2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="80dip"
+        android:layout_marginLeft="80dip"
+        android:background="@drawable/custom_button_image"
+        android:drawableTop="@drawable/ic_launcher"
+        android:paddingBottom="5dip"
+        android:paddingTop="5dip"
+        android:textSize="14dip"
+        android:text="Custom Button İmage"
+        android:textColor="@drawable/custom_button_text_color"
+        android:textStyle="normal" />
+        -->
+
+
+    <!--
+    *Background olarak hazırladığımız custom_button_background_png dosyasını seçiyoruz
+    *Burda butonun şeklini kendimiz oluşturmuyoruz.
+    *İmage editörlerle(photoshop,gimp,fireworks vs..) oluşturduğumuz button u background olarak veriyoruz.
+    * Aslında direk background olarak verebilirdik ama tıklandığı zaman background şeklinin değişmesini istedimiz için xml dosyasında hazırladık
+    -->
+   <!-- <Button
+        android:id="@+id/button3"
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/custom_button_background_png"/>
+
+        -->
+
 
 </RelativeLayout>
