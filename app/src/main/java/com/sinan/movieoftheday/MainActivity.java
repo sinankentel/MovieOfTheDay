@@ -49,13 +49,17 @@ public class MainActivity extends AppCompatActivity {
     public void generateNewMovie(){
 
         int minNumber = 10;
-        int maxNumber = 10;
+        int maxNumber = 16;
 
         randomNumber = rand.nextInt(maxNumber-minNumber + 1) + minNumber;
 
         try {
             DownloadTask task = new DownloadTask();
-            task.execute("https://api.themoviedb.org/3/movie/" + Integer.toString(randomNumber) + "?api_key=dfbc389973f4a0bf88d31f55d423b08a").get();
+            Log.i("task statüsü", task.getStatus().toString());
+
+
+            task.execute("https://api.themoviedb.org/3/movie/" + Integer.toString(randomNumber) + "?api_key=dfbc389973f4a0bf88d31f55d423b08a");
+
 
         } catch (Exception e) {
 
@@ -185,9 +189,9 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     Log.i("Error", "responseCode 200 değil: " + String.valueOf(responseCode));
-                    //generateNewMovie();
+                    generateNewMovie();
 
-                    return result;
+                    return null;
 
                 }
 
@@ -201,40 +205,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String result2) {
-            super.onPostExecute(result2);
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
 
             try {
 
-                JSONObject jsonObject = new JSONObject(result2);
+                JSONObject jsonObject = new JSONObject(result);
 
-                randomStatus = jsonObject.getString("status_code");
+                randomTitle = jsonObject.getString("original_title");
+                randomMovieYear = jsonObject.getString("release_date");
+                randomMovieImageURL = jsonObject.getString("backdrop_path");
 
-
-                if (randomStatus.equals("Released")) {
-
-                    randomTitle = jsonObject.getString("original_title");
-                    randomMovieYear = jsonObject.getString("release_date");
-                    randomMovieImageURL = jsonObject.getString("backdrop_path");
-
-                    movieTitleTextView.setText(randomTitle);
-                    movieDetailButton.setVisibility(View.VISIBLE);
-
-                    Log.i("Info", "Status Released, hata yok.");
-
-
-                }else if (randomStatus.equals("34")){
-
-                    Log.i("Info", "Bu random number'da film yok");
-                    //generateNewMovie();
-
-                    movieTitleTextView.setText("Try Again...");
-
-                }else{
-
-                    Log.i("Info", "unexpected...");
-
-                }
+                movieTitleTextView.setText(randomTitle);
+                movieDetailButton.setVisibility(View.VISIBLE);
 
 
             } catch (JSONException e) {
