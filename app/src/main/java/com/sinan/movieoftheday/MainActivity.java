@@ -1,16 +1,21 @@
 package com.sinan.movieoftheday;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +26,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     String randomMovieImageURL = "";
     String randomStatus;
     Button movieDetailButton;
+    String randomMovieCountry;
 
 
     public void logger() {
@@ -48,6 +59,32 @@ public class MainActivity extends AppCompatActivity {
 
         int testRandom = rand.nextInt(5);
         Log.i("test_numarası", String.valueOf(testRandom));
+
+
+    }
+
+
+    public void notificationCall(String movieTitle, String movieYear, String movieCountry){
+
+        String formattedMovieYear = movieYear.substring(0,4);
+
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),1,intent,PendingIntent.FLAG_ONE_SHOT);
+
+        NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.mipmap.ic_launcher_round,"Go",pendingIntent).build();
+
+        Notification notification = new NotificationCompat.Builder(getApplicationContext())
+                .setContentTitle(formattedMovieYear + " yılından bir film...")
+                .setContentText(movieCountry + " yapımı " + movieTitle)
+                .setContentIntent(pendingIntent)
+                .addAction(action)
+                .setSmallIcon(android.R.drawable.presence_away)
+                .build();
+
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notification);
 
 
     }
@@ -165,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(responseCode == HttpURLConnection.HTTP_OK) {
 
+
                     inputStream = connection.getInputStream();
                     reader = new InputStreamReader(inputStream);
 
@@ -220,9 +258,13 @@ public class MainActivity extends AppCompatActivity {
                 randomTitle = jsonObject.getString("original_title");
                 randomMovieYear = jsonObject.getString("release_date");
                 randomMovieImageURL = jsonObject.getString("backdrop_path");
+                randomMovieCountry = jsonObject.getString("production_countries");
+
 
                 movieTitleTextView.setText(randomTitle);
                 movieDetailButton.setVisibility(View.VISIBLE);
+
+                notificationCall(randomTitle, randomMovieYear, null);
 
 
             } catch (JSONException e) {
